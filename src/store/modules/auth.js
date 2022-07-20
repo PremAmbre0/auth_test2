@@ -1,5 +1,5 @@
 
-import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup,signOut, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 
 const state = {
     token: null,
@@ -81,7 +81,19 @@ const actions = {
                 console.log(error)
                 console.log(errorCode, errorMessage, email, credential);
             });
-
+    },
+    signoutFromGoogle(context) {
+        const auth = getAuth();
+        signOut(auth).then(() => {
+            // Sign-out successful.
+        }).catch((error) => {
+            // An error happened.
+        });
+        context.commit('setUser', {
+            credential: null,
+            token: null,
+            user: null,
+        })
     }
 
 }

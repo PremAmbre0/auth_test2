@@ -9,9 +9,17 @@
         <div>
             user:{{ user }}
         </div>
-        <button @click="signinWithGoogle">
-            sign in with Google
-        </button>
+        <div>
+            Google Auth
+            <div>
+                <button @click="signinWithGoogle">
+                    sign in with Google
+                </button>
+                <button @click="signoutFromGoogle">
+                    sign out with Google
+                </button>
+            </div>
+        </div>
         <button @click="signinWithFacebook">
             sign in with Facebook
         </button>
@@ -26,7 +34,7 @@ export default {
         ...mapGetters('auth', ['token', 'credential', 'user'])
     },
     methods: {
-        ...mapActions('auth', ['signinWithGoogle','signinWithFacebook'])
+        ...mapActions('auth', ['signinWithGoogle','signoutFromGoogle', 'signinWithFacebook'])
     }
 }
 </script>
