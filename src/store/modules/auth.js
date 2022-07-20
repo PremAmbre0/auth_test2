@@ -1,26 +1,25 @@
 
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
+import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 
 const state = {
-    token :null,
-    credential :null,
-    user:null,
+    token: null,
+    credential: null,
+    user: null,
 }
 const getters = {
-    token(state){
+    token(state) {
         return state.token
     },
-    credential(state){
+    credential(state) {
         return state.credential
     },
-    user(state){
+    user(state) {
         return state.user
     },
 
 }
 const mutations = {
-    setUser(state,payload){
+    setUser(state, payload) {
         state.token = payload.token
         state.credential = payload.credential
         state.user = payload.user
@@ -36,10 +35,10 @@ const actions = {
             const token = credential.accessToken;
             // The signed-in user info.
             const user = result.user;
-            context.commit('setUser',{
-                credential : credential,
-                token : token,
-                user : user,
+            context.commit('setUser', {
+                credential: credential,
+                token: token,
+                user: user,
             })
         }).catch((error) => {
             // Handle Errors here.
@@ -52,12 +51,43 @@ const actions = {
             console.log(error)
             console.log(errorCode, errorMessage, email, credential);
         });
+    },
+    signinWithFacebook(context) {
+        const auth = getAuth();
+        const provider = new FacebookAuthProvider();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // The signed-in user info.
+                const user = result.user;
+
+                // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                const credential = FacebookAuthProvider.credentialFromResult(result);
+                const accessToken = credential.accessToken;
+
+                context.commit('setUser', {
+                    credential: credential,
+                    token: accessToken,
+                    user: user,
+                })
+            })
+            .catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = FacebookAuthProvider.credentialFromError(error);
+                console.log(error)
+                console.log(errorCode, errorMessage, email, credential);
+            });
+
     }
 
 }
 
 export default {
-    namespaced:true,
+    namespaced: true,
     state,
     getters,
     mutations,
