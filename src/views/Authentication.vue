@@ -1,0 +1,28 @@
+<template>
+    <div>
+        <div>
+            token:{{ token }}
+        </div>
+        <div>
+            credential :{{ credential }}
+        </div>
+        <div>
+            user:{{ user }}
+        </div>
+        <button @click="signinWithGoogle">
+            sign in with goggle
+        </button>
+    </div>
+</template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex'
+export default {
+    computed: {
+        ...mapGetters('auth', ['token', 'credential', 'user'])
+    },
+    methods: {
+        ...mapActions('auth', ['signinWithGoogle'])
+    }
+}
+</script>
